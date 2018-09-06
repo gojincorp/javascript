@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/gojincorp/javascript/issues"
   },
-  "homepage": "https://github.com/gojincorp/javascript#readme"
+  "homepage": "https://github.com/gojincorp/javascript#readme",
+  "devDependencies": {
+    "grunt": "^1.0.3"
+  }
 }
