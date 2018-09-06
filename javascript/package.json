@@ -1,0 +1,19 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "Javascript exercises",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gojincorp/javascript.git"
+  },
+  "author": "Eric Yee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gojincorp/javascript/issues"
+  },
+  "homepage": "https://github.com/gojincorp/javascript#readme"
+}
