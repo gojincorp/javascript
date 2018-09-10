@@ -13,8 +13,12 @@ module.exports = function(grunt) {
 					}
 				}
 			}
+		},
+		eslint: {
+			target: ['Resources/Public/es6/*.js', 'Resources/Private/es6/*.js']
 		}
 	});
 	grunt.loadNpmTasks('grunt-browserify');
-	grunt.registerTask('default', ['browserify:dist']);
+	grunt.loadNpmTasks('grunt-eslint');
+	grunt.registerTask('default', ['eslint', 'browserify:dist']);
 };
