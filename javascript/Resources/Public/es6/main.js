@@ -16,3 +16,7 @@ function say({subject, verb, object}) {
 for (let s of sentences) {
     say(s);
 }
+
+const multiline = `foo
+bar`;
+console.log(multiline);
