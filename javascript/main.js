@@ -49,73 +49,44 @@ $(function() {
 
 	// TESTING SYMBOL SUPPORT IN JQUERY
 	// ================================
-	const mySym = Symbol('foo');
-	console.log(typeof mySym);
-	//console.log([mySym]);
-	const symbol1 = Symbol('bar');
-	const myObj = { a: 1, b: 2, c: 3, "d": 4, [mySym]: 5};
-	console.log(Object.keys(myObj));
-	console.log(Reflect.ownKeys(myObj));
-	console.log(Object.getOwnPropertyNames(myObj));
-	console.log(Object.getOwnPropertySymbols(myObj));
-	console.log(myObj[mySym]);
+	function myProm(num) {
+		return new Promise(function(resolve, reject) {
+			if (num === 13) return reject(new Error("Unlucky number..."));
+			resolve("OK (" + num + ")");
+		});
+	}
 	
-	// TESTING CLASS IMPLEMENTATION
-	// ============================
-	class Fibonacci {
-		[Symbol.iterator]() {
-			let a = 0, b = 1;
-			return {
-				next() {
-					let rval = {value: b, done: false};
-					b += a;
-					a = rval.value;
-					return rval;
-				}
+	function* myGen() {
+		let dataA;
+		let dataB;
+		let dataC;
+		let dataD;
+		try {
+			dataA = yield myProm(1);
+			dataB = yield myProm(3);
+			dataC = yield myProm(8);
+			dataD = yield myProm(22);
+			throw(new Error("FOOBAR"));
+		} catch (err) {
+			console.log("myGen::catch: " + err.message);
+			//throw err;
+		}
+		console.log("HAPPY" + dataA + dataB + dataC + dataD);
+	}
+	
+	function myGrun(g) {
+		const it = g();
+		(function iterate(val) {
+			const x = it.next(val);
+			if (!x.done) {
+				x.value.then(iterate).catch(err => it.throw(err));
+			} else {
+				setTimeout(iterate, 0, x.value);
 			}
-		}
-	}
-	let myFib = new Fibonacci();
-	let i = 9;
-	for (let fibNum of myFib) {
-		console.log(fibNum);
-		if(i-- < 0) break;
+		}());
 	}
 	
-	function* rainbow () {
-		yield 'red';
-		yield 'green';
-		yield 'blue';
-	}
-	function* fibFunc () {
-		let a = 0, b = 1;
-		for (;;) {
-			let rval = b;
-			b += a;
-			a = rval;
-			yield rval;
-		}
-	}
-	const myRainbow = rainbow();
-	console.log(myRainbow.next());
-	console.log(myRainbow.next());
-	console.log(myRainbow.next());
-	console.log(myRainbow.next());
-	i = 9;
-	for (let fibNum of fibFunc()) {
-		console.log(fibNum);
-		if(i-- < 0) break;
-	}
-	
-	function* interrogate() {
-		const name = yield "What is your name?";
-		const color = yield "What is your favorite color?";
-		return `${name}'s favorite color is ${color}.`;
-	}
-	const myInterrogate = interrogate();
-	console.log(myInterrogate.next());
-	console.log(myInterrogate.next('Eric'));
-	console.log(myInterrogate.next('Purple'));
+	myGrun(myGen);
 });
 
 /*
