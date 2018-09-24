@@ -87,6 +87,14 @@ $(function() {
 	}
 	
 	myGrun(myGen);
+	
+	function myTraverse(node, prefix) {
+		console.log(prefix + node.nodeName);
+		for (let i = 0; i < node.childNodes.length; i++) {
+			myTraverse(node.childNodes[i], prefix + '\t');
+		}
+	}
+	myTraverse(document, '');
 });
 
 /*
