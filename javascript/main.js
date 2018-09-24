@@ -94,7 +94,18 @@ $(function() {
 			myTraverse(node.childNodes[i], prefix + '\t');
 		}
 	}
-	myTraverse(document, '');
+	//myTraverse(document, '');
+	
+	var module = {
+		exports: {}
+	};
+	
+	(function(module, exports) {
+		module.exports = function (n) { return n * 1000 };
+	}(module, module.exports))
+	console.log("END OF FILE...");
+	console.log(module.exports);
+	console.log("END OF FILE...");
 });
 
 /*

@@ -7,6 +7,11 @@
 	<h1>First JavaScript application!</h1>
 	<p>Setting up local project with GitHub...</p>
 	<canvas id="mainCanvas"></canvas>
+	<div class="serverInfo">
+		Server is running on <span data-replace="platform">???</span>
+		with Node <span data-replace="nodeVersion">???</span>. It has
+		been up for <span data-replace="uptime">???</span> seconds.
+	</div>
 	<script
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -14,5 +19,24 @@
 	<script type="text/javascript" src="paper-full.min.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 	<script type="text/javascript" src="node_modules/moment/moment.js"></script>
+	
+	<script>
+		function refreshServerInfo() {
+			const req = new XMLHttpRequest();
+			req.addEventListener('load', function() {
+				const data = JSON.parse(this.responseText);
+				const serverInfo = document.querySelector('.serverInfo');
+				Object.keys(data).forEach(p => {
+					const replacements = serverInfo.querySelectorAll(`[data-replace="${p}"]`);
+					for (let r of replacements) {
+						r.textContent = data[p];
+					}
+				})
+			});
+			req.open('GET', 'http://www.ideasbeyond.com:7071', true);
+			req.send();
+		}
+		setInterval(refreshServerInfo, 200);
+	</script>
 	</body>
 </html>
