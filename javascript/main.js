@@ -45,69 +45,33 @@ $(function() {
 		return values[c.value] + suits[c.suit];
 	}
 	console.log(cards.filter(c => c.value > 10).map(cardToString));
+	console.log(cards.filter(c => c.value === 1).map(cardToString));
 	console.log(cards.filter(c => c.value === 11).map(c => ({ foo: 'test', bar: c.value})));
 
 	// TESTING SYMBOL SUPPORT IN JQUERY
 	// ================================
-	function myProm(num) {
-		return new Promise(function(resolve, reject) {
-			if (num === 13) return reject(new Error("Unlucky number..."));
-			resolve("OK (" + num + ")");
-		});
-	}
-	
-	function* myGen() {
-		let dataA;
-		let dataB;
-		let dataC;
-		let dataD;
-		try {
-			dataA = yield myProm(1);
-			dataB = yield myProm(3);
-			dataC = yield myProm(8);
-			dataD = yield myProm(22);
-			throw(new Error("FOOBAR"));
-		} catch (err) {
-			console.log("myGen::catch: " + err.message);
-			//throw err;
-		}
-		console.log("HAPPY" + dataA + dataB + dataC + dataD);
-	}
-	
-	function myGrun(g) {
-		const it = g();
-		(function iterate(val) {
-			const x = it.next(val);
-			if (!x.done) {
-				x.value.then(iterate).catch(err => it.throw(err));
-			} else {
-				setTimeout(iterate, 0, x.value);
+	var myFibNum = {
+		[Symbol.iterator]: function() {
+			let a = 0;
+			let b = 1;
+			return {
+				next: function () {
+					let rval = {value: b, done: false};
+					b += a;
+					a = rval.value;
+					return rval;
+				}
 			}
-		}());
-	}
-	
-	myGrun(myGen);
-	
-	function myTraverse(node, prefix) {
-		console.log(prefix + node.nodeName);
-		for (let i = 0; i < node.childNodes.length; i++) {
-			myTraverse(node.childNodes[i], prefix + '\t');
 		}
 	}
-	//myTraverse(document, '');
-	
-	var module = {
-		exports: {}
-	};
-	
-	(function(module, exports) {
-		module.exports = function (n) { return n * 1000 };
-	}(module, module.exports))
-	console.log("END OF FILE...");
-	console.log(module.exports);
-	console.log("END OF FILE...");
+	var i = 0;
+	for(var val of myFibNum) {
+		console.log(val);
+		if (i++ > 10) break;
+	}
 });
-
+var a = 5;
+console.log("Window => " + (this === window));
 /*
 (function() {
 	'use strict';
